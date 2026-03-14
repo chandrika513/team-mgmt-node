@@ -1,153 +1,50 @@
 # Team Management Hub
 
-A full-stack task management application built with Node.js, Express, TypeScript (backend) and React, TypeScript, Context API (frontend).
+Simple task management app with Node/Express backend and React frontend.
 
 ## Features
 
-- **Task Management**: Create, read, update, and delete tasks
-- **Task Properties**: Title, Description, Priority (Low/Medium/High), Status (Pending/In Progress/Done)
-- **Search & Filter**: Search by title, filter by priority and status
-- **Protected Delete**: Delete operations require authentication header
-- **Data Validation**: Zod validation on both client and server
-- **Responsive UI**: Clean, modern interface with Tailwind CSS
+- Create, read, update, delete tasks
+- Tasks have: title, description, priority (low/medium/high), status (pending/in_progress/done)
+- Delete requires auth header (X-Delete-Token: task-manager-secret)
 
 ## Tech Stack
 
-### Backend
-- Node.js
-- Express.js
+**Backend:**
+- Node.js + Express
 - TypeScript
-- CORS enabled for frontend communication
+- Jest for testing
 
-### Frontend
-- React 18
-- TypeScript
-- Context API for state management
-- Zod for form validation
-- Lucide React for icons
-- Axios for API calls
-- Tailwind CSS for styling
+**Frontend:**
+- React + TypeScript
+- Context API for state
+- Tailwind CSS
 
-## Project Structure
+## Quick Start
 
-```
-TeamMngmentHubNode/
-├── backend/
-│   ├── controllers/
-│   │   └── taskController.ts
-│   ├── models/
-│   │   └── taskModel.ts
-│   ├── data/
-│   │   └── taskStore.ts
-│   ├── routes/
-│   │   └── taskRoutes.ts
-│   ├── index.ts
-│   └── package.json
-├── frontend/
-│   ├── src/
-│   │   ├── api/
-│   │   │   └── taskApi.ts
-│   │   ├── components/
-│   │   │   ├── TaskList.tsx
-│   │   │   ├── TaskForm.tsx
-│   │   │   └── TaskItem.tsx
-│   │   ├── context/
-│   │   │   └── TaskContext.tsx
-│   │   ├── types/
-│   │   │   └── task.ts
-│   │   └── App.tsx
-│   └── package.json
-└── README.md
-```
-
-## Getting Started
-
-### Prerequisites
-- Node.js (v18 or higher)
-- npm or yarn
-
-### Backend Setup
-
-1. Navigate to the backend directory:
 ```bash
+# Backend
 cd backend
-```
-
-2. Install dependencies:
-```bash
 npm install
-```
+npm test        # run tests
+npm run dev     # start server on :8000
 
-3. Start the development server:
-```bash
-npm run dev
-```
-
-The backend will run on `http://localhost:8000`
-
-### Frontend Setup
-
-1. Navigate to the frontend directory:
-```bash
+# Frontend
 cd frontend
-```
-
-2. Install dependencies:
-```bash
 npm install
+npm run dev     # start on :5173
 ```
 
-3. Start the development server:
-```bash
-npm run dev
-```
+## API
 
-The frontend will run on `http://localhost:5173`
+- `GET /tasks/all` - list all tasks
+- `GET /tasks/:id` - get one task
+- `POST /tasks/create` - create task (needs title, priority, status)
+- `PUT /tasks/:id` - update task
+- `DELETE /tasks/:id` - delete task (needs X-Delete-Token header)
 
-## API Endpoints
+## Notes
 
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/tasks/all` | Get all tasks | No |
-| GET | `/tasks/:id` | Get task by ID | No |
-| POST | `/tasks/create` | Create new task | No |
-| PUT | `/tasks/:id` | Update task | No |
-| DELETE | `/tasks/:id` | Delete task | Yes (X-Auth-Token header) |
-
-### Protected Delete Header
-
-To delete a task, include the following header:
-```
-X-Auth-Token: delete-auth-token
-```
-
-## Data Models
-
-### Task
-```typescript
-interface Task {
-  id: string;
-  title: string;
-  description?: string;
-  priority: Priority; // 'low' | 'medium' | 'high'
-  status: Status;     // 'pending' | 'in_progress' | 'done'
-}
-```
-
-## Validation Rules
-
-- **Title**: Required, max 200 characters
-- **Description**: Optional, max 1000 characters
-- **Priority**: Must be one of: low, medium, high
-- **Status**: Must be one of: pending, in_progress, done
-
-## Development Notes
-
-- Backend uses in-memory storage (tasks array)
-- CORS is configured to allow requests from `http://localhost:3000`
-- Global error handling middleware catches unhandled errors
-- 404 handler for unknown routes
-
-## License
-
-MIT
+- In-memory storage (resets on restart)
+- CORS configured for localhost:3000
+- Tests are basic but cover main functionality

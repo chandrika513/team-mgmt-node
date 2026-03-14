@@ -27,12 +27,12 @@ export const createTask = (req: Request, res: Response): void => {
   }
 
   if (!Object.values(Priority).includes(priority)) {
-    res.status(400).json({ message: `Priority must be one of: ${Object.values(Priority).join(', ')}` });
+    res.status(400).json({ message: 'Priority must be one of: low, medium, high' });
     return;
   }
 
   if (!Object.values(Status).includes(status)) {
-    res.status(400).json({ message: `Status must be one of: ${Object.values(Status).join(', ')}` });
+    res.status(400).json({ message: 'Status must be one of: pending, in_progress, done' });
     return;
   }
 
@@ -60,22 +60,32 @@ export const updateTask = (req: Request, res: Response): void => {
   }
 
   if (priority && !Object.values(Priority).includes(priority)) {
-    res.status(400).json({ message: `Priority must be one of: ${Object.values(Priority).join(', ')}` });
+    res.status(400).json({ message: 'Priority must be one of: low, medium, high' });
     return;
   }
 
   if (status && !Object.values(Status).includes(status)) {
-    res.status(400).json({ message: `Status must be one of: ${Object.values(Status).join(', ')}` });
+    res.status(400).json({ message: 'Status must be one of: pending, in_progress, done' });
     return;
   }
 
-  const updatedTask: Task = {
-    ...tasks[taskIndex],
-    ...(title && { title }),
-    ...(description !== undefined && { description }),
-    ...(priority && { priority }),
-    ...(status && { status }),
-  };
+  const updatedTask: Task = { ...tasks[taskIndex] };
+
+  if (title) {
+    updatedTask.title = title;
+  }
+
+  if (description !== undefined) {
+    updatedTask.description = description;
+  }
+
+  if (priority) {
+    updatedTask.priority = priority;
+  }
+
+  if (status) {
+    updatedTask.status = status;
+  }
 
   tasks[taskIndex] = updatedTask;
   res.json({ task: updatedTask });
